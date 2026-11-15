@@ -1,14 +1,24 @@
 
 from sentence_transformers import SentenceTransformer
 
-# Load a lightweight pretrained embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = None
+
+def get_model():
+    global model
+
+    if model is None:
+        model = SentenceTransformer(
+            "all-MiniLM-L6-v2",
+            device="cpu"
+        )
+
+    return model
 
 
 def generate_embedding(text: str):
     """
     Convert text into a numerical vector.
     """
-    embedding = model.encode(text)
+    embedding = get_model().encode(text)
 
     return embedding.tolist()
